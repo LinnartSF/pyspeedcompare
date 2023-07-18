@@ -38,3 +38,20 @@ dict = {"a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6}
 p.start("finding match via key dictionary")
 ls[dict["g"]][1] += 1
 p.stop()
+
+# test 3: reading value from list vs storing in local variable once and reading from there
+p.start("reading and manipulating cell in array")
+for i in range(10000):
+    
+    ls[dict["g"]][1] = i
+
+p.stop()
+
+p.start("storing cell value locally and reading and updating local variable instead")
+val = ls[dict["g"]][1]
+for i in range(10000):
+    
+    val = i
+    
+ls[dict["g"]][1] = val
+p.stop()
