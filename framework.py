@@ -1,4 +1,105 @@
+"""
+
+this module supports Python code execution time testing, and allows the run time comparison of two functions.
+requires time, numpy, and matplotlib.pyplot
+
+"""
+
+__author__ = "Linnart Felkl"
+__email__ = "linnartsf@gmail.com"
+
 import time
+from matplotlib import pyplot as plt
+import numpy as np
+
+class Profiler:
+    """ class for comparing runtime performance of two alternative functions
+
+    provides tools for comparing two alternative funtions,
+    aiding execution, quantification, and visualization of comparison results
+
+    attrs:
+        f1            : first function, must not take args or return values
+        f2            : second function for comparison, must also not take args or return values
+        size          : amount of comparison reptitions 
+        ls_durations1 : execution time for each f1 execution
+        ls_durations2 : execution time for each f2 execution
+    
+    """
+
+    Size :int
+    ls_durations1 :list
+    ls_durations2 :list
+    
+    def __init__(self,
+                f1,
+                f2,
+                testsize :int
+                ):
+        """ constructor """
+
+        self.f1 = f1
+        self.f2 = f2
+        self.Size = testsize
+        self.ls_durations1 = np.zeros(testsize)
+        self.ls_durations2 = np.zeros(testsize)
+    
+    def run(self) -> None:
+        """ runs the comparison tests
+
+        runs both functions and measures time used per test run;
+        run duration is stored in ls_duration lists, for f1 and f2 respectively
+
+        args:
+            None
+        
+        returns:
+            None
+        
+        sets:
+            ls_durations1 (list of float) : stores execution durations of f1 into list
+            ls_durations2 (list of float) : stores execution durations of f2 into list
+        
+        """
+
+        for t in range(self.Size):
+
+            t1 = time.time()
+
+            self.f1()
+
+            t2 = time.time()
+
+            self.ls_durations1[t] = t2 - t1
+
+            t1 = time.time()
+
+            self.f2()
+
+            t2 = time.time()
+
+            self.ls_durations2[t] = t2 - t1
+    
+    def report(self) -> None:
+        """ visualizes comparison results
+
+        plots a histogram showing the distribution in execution times for f1 and f2
+
+        args:
+            None
+        
+        returns:
+            None
+
+        sets:
+            None
+        
+        """
+
+        plt.hist(self.ls_durations1, bins = 50, label = "f1", alpha = 0.3)
+        plt.hist(self.ls_durations2, bins = 50, label = "f2", alpha = 0.3)
+        plt.legend()
+        plt.show()
 
 class Simpleprofiler:
     """ class for modeling simple profiler tool
@@ -20,21 +121,7 @@ class Simpleprofiler:
     t_end   :float
     
     def __init__(self):
-        """ constructor
-        
-        class Profiler class constructor
-        
-        args:
-            None
-        
-        returns:
-            None
-        
-        sets:
-            t_start (float) : start time of measurement, set to default
-            t_end   (float) : end time of measurement, set to default
-        
-        """
+        """ constructor """
         
         self.t_start = 0.0
         self.t_end = 0.0

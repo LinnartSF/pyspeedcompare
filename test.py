@@ -1,8 +1,8 @@
-from framework import Simpleprofiler
+from framework import Simpleprofiler, Profiler
 
 p = Simpleprofiler()
 
-# test 1: for loop vs while loop
+# test 1: for loop vs. while loop
 p.start("for loop test")
 
 for i in range(10000):
@@ -55,3 +55,24 @@ for i in range(10000):
     
 ls[dict["g"]][1] = val
 p.stop()
+
+# test 4: compare two functions
+def for_looping():
+    
+    for i in range(1000000):
+    
+        pass
+
+def while_looping():
+
+    i = 0
+
+    while i < 1000000:
+    
+        i += 1
+
+p = Profiler(f1 = for_looping, f2 = while_looping, testsize = 500)
+
+p.run()
+
+p.report()
